@@ -44,9 +44,12 @@ class AppStrings {
   static const String teamDeletedSuccess = 'Jamoa o‘chirildi';
   static const String teamArchivedSuccess = 'Jamoa arxivlandi';
   static const String teamUnarchivedSuccess = 'Jamoa arxivdan chiqarildi';
-  static const String teamNameValidation = 'Iltimos, jamoa nomini kiriting (kamida 2 belgi)';
-  static const String teamMatchesWarning = 'Bu jamoa o‘yinlarda qatnashgan. Eski natijalar saqlanishi uchun uni butunlay o‘chirish o‘rniga arxivlash tavsiya etiladi.';
-  static const String confirmDeleteTeam = 'Haqiqatan ham bu jamoani o‘chirmoqchimisiz?';
+  static const String teamNameValidation =
+      'Iltimos, jamoa nomini kiriting (kamida 2 belgi)';
+  static const String teamMatchesWarning =
+      'Bu jamoa o‘yinlarda qatnashgan. Eski natijalar saqlanishi uchun uni butunlay o‘chirish o‘rniga arxivlash tavsiya etiladi.';
+  static const String confirmDeleteTeam =
+      'Haqiqatan ham bu jamoani o‘chirmoqchimisiz?';
   static const String confirmArchiveTeam = 'Jamoani arxivlamoqchimisiz?';
 
   // Schedule & Matches
@@ -60,8 +63,10 @@ class AppStrings {
   static const String deleteMatch = 'O‘yinni o‘chirish';
   static const String deleteRound = 'Turni o‘chirish';
   static const String deleteCurrentRound = 'Ushbu turni o‘chirish';
-  static const String confirmDeleteRound = 'Haqiqatan ham ushbu turni va uning barcha o‘yinlarini o‘chirmoqchimisiz?';
-  static const String deleteRoundWarning = 'Diqqat: Ushbu turda natijasi kiritilgan o‘yinlar bor. O‘chirilsa, turnir jadvali ham qayta hisoblanadi.';
+  static const String confirmDeleteRound =
+      'Haqiqatan ham ushbu turni va uning barcha o‘yinlarini o‘chirmoqchimisiz?';
+  static const String deleteRoundWarning =
+      'Diqqat: Ushbu turda natijasi kiritilgan o‘yinlar bor. O‘chirilsa, turnir jadvali ham qayta hisoblanadi.';
   static const String restingTeam = 'Dam oluvchi jamoa';
   static const String enterScore = 'Hisobni kiritish';
   static const String editScore = 'Hisobni tahrirlash';
@@ -74,9 +79,12 @@ class AppStrings {
   static const String timeSlot = 'O‘yin vaqti';
   static const String selectTimeSlot = 'Vaqt oralig‘ini tanlang';
   static const String vs = 'VS';
-  static const String scoreValidation = 'Hisob manfiy bo‘lmasligi va faqat raqam bo‘lishi kerak';
-  static const String confirmDeleteMatch = 'Haqiqatan ham ushbu o‘yinni o‘chirmoqchimisiz?';
-  static const String confirmResetTournament = 'Turnirni qayta boshlash barcha o‘yin va natijalarni o‘chiradi. Davom etasizmi?';
+  static const String scoreValidation =
+      'Hisob manfiy bo‘lmasligi va faqat raqam bo‘lishi kerak';
+  static const String confirmDeleteMatch =
+      'Haqiqatan ham ushbu o‘yinni o‘chirmoqchimisiz?';
+  static const String confirmResetTournament =
+      'Turnirni qayta boshlash barcha o‘yin va natijalarni o‘chiradi. Davom etasizmi?';
 
   // Standings
   static const String standingsTitle = 'Turnir jadvali';
@@ -122,14 +130,9 @@ class AppStrings {
   static const String appearance = 'Tashqi ko‘rinish';
   static const String darkMode = 'Qorong‘i rejim';
   static const String lightMode = 'Yorug‘ rejim';
-  static const String developerOptions = 'Dasturchi sozlamalari';
-  static const String simulateErrors = 'Xatoliklarni simulyatsiya qilish';
-  static const String simulateErrorsSubtitle = 'Loading, error va retry holatlarini sinash';
-  static const String mockDelay = 'Mock server kechikishi';
   static const String tournamentSettings = 'Turnirni boshqarish';
   static const String currentTournament = 'Joriy turnir';
   static const String archiveTournament = 'Turnirni arxivlash';
   static const String resetTournament = 'Turnirni qayta boshlash';
   static const String aboutApp = 'Ilova haqida';
 }
-
