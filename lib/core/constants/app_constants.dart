@@ -12,22 +12,26 @@ class AppConstants {
     '22:00 – 23:00',
   ];
 
-  /// Default number of rounds for the tournament (full double round-robin for 11 teams)
+  /// Default number of rounds for the tournament (full double round-robin for 12 teams)
   static const int defaultTotalRounds = 22;
 
-  /// Initial 11 default teams as requested in the requirements (in Cyrillic)
+  /// Initial 12 La Liga teams
   static const List<InitialTeamData> initialTeams = [
-    InitialTeamData(name: 'Шохгузар ФК', colorValue: 0xFF00897B),   // Teal
-    InitialTeamData(name: 'Булокбоши ФК', colorValue: 0xFF00C853),  // Pitch Green
-    InitialTeamData(name: 'Фахрийлар ФК', colorValue: 0xFFFFB300),  // Amber/Gold
-    InitialTeamData(name: 'Дустлик ФК', colorValue: 0xFF1E88E5),    // Blue
-    InitialTeamData(name: 'Курғонча ФК', colorValue: 0xFFFB8C00),   // Orange
-    InitialTeamData(name: 'Арсенал ФК', colorValue: 0xFFE53935),    // Red
-    InitialTeamData(name: 'Сарбонтепа ФК', colorValue: 0xFF1565C0), // Navy
-    InitialTeamData(name: 'Махалла ФК', colorValue: 0xFF2E7D32),    // Forest Green
-    InitialTeamData(name: 'Ливерпуль ФК', colorValue: 0xFFC62828),  // Dark Red
-    InitialTeamData(name: 'Найман ФК', colorValue: 0xFF8E24AA),     // Purple
-    InitialTeamData(name: 'Кезар ФК', colorValue: 0xFF00ACC1),      // Cyan
+    InitialTeamData(name: 'Real Madrid', colorValue: 0xFF1565C0), // Blue
+    InitialTeamData(name: 'Barcelona', colorValue: 0xFFE53935), // Red
+    InitialTeamData(
+      name: 'Atletico Madrid',
+      colorValue: 0xFFC62828,
+    ), // Dark Red
+    InitialTeamData(name: 'Athletic Bilbao', colorValue: 0xFFD32F2F), // Red
+    InitialTeamData(name: 'Sevilla', colorValue: 0xFFF44336), // Red
+    InitialTeamData(name: 'Villarreal', colorValue: 0xFFFFEB3B), // Yellow
+    InitialTeamData(name: 'Real Sociedad', colorValue: 0xFF1E88E5), // Blue
+    InitialTeamData(name: 'Valencia', colorValue: 0xFFFB8C00), // Orange
+    InitialTeamData(name: 'Real Betis', colorValue: 0xFF2E7D32), // Green
+    InitialTeamData(name: 'Celta Vigo', colorValue: 0xFF00ACC1), // Cyan
+    InitialTeamData(name: 'Girona', colorValue: 0xFFE53935), // Red
+    InitialTeamData(name: 'Mallorca', colorValue: 0xFF6D4C41), // Brown
   ];
 
   /// Palette colors for team color picker
@@ -53,9 +57,5 @@ class InitialTeamData {
   final String name;
   final int colorValue;
 
-  const InitialTeamData({
-    required this.name,
-    required this.colorValue,
-  });
+  const InitialTeamData({required this.name, required this.colorValue});
 }
-

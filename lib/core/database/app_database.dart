@@ -20,21 +20,23 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (Migrator m) async {
-          await m.createAll();
-        },
-        beforeOpen: (details) async {
-          await customStatement('PRAGMA foreign_keys = ON;');
-          await seedInitialDataIfEmpty();
-        },
-      );
+    onCreate: (Migrator m) async {
+      await m.createAll();
+    },
+    beforeOpen: (details) async {
+      await customStatement('PRAGMA foreign_keys = ON;');
+      await seedInitialDataIfEmpty();
+    },
+  );
 
   // ================= TEAMS QUERIES =================
 
   /// Get all active teams (or all including archived if includeArchived is true)
   Future<List<Team>> getAllTeams({bool includeArchived = false}) {
     if (includeArchived) {
-      return (select(teams)..orderBy([(t) => OrderingTerm(expression: t.name)])).get();
+      return (select(
+        teams,
+      )..orderBy([(t) => OrderingTerm(expression: t.name)])).get();
     }
     return (select(teams)
           ..where((t) => t.isArchived.equals(false))
@@ -125,7 +127,9 @@ class AppDatabase extends _$AppDatabase {
   /// Get matches for a specific round
   Future<List<Matche>> getMatchesByRound(String tournamentId, int round) {
     return (select(matches)
-          ..where((m) => m.tournamentId.equals(tournamentId) & m.round.equals(round))
+          ..where(
+            (m) => m.tournamentId.equals(tournamentId) & m.round.equals(round),
+          )
           ..orderBy([(m) => OrderingTerm(expression: m.slotIndex)]))
         .get();
   }
@@ -176,26 +180,25 @@ class AppDatabase extends _$AppDatabase {
 
   /// Delete upcoming matches for a round (for randomize/regenerate)
   Future<int> deleteUpcomingMatchesForRound(String tournamentId, int round) {
-    return (delete(matches)
-          ..where((m) =>
+    return (delete(matches)..where(
+          (m) =>
               m.tournamentId.equals(tournamentId) &
               m.round.equals(round) &
-              m.status.equals('upcoming')))
+              m.status.equals('upcoming'),
+        ))
         .go();
   }
 
   /// Delete an entire round (all matches and round rest for that round)
   Future<void> deleteEntireRound(String tournamentId, int round) async {
     await transaction(() async {
-      await (delete(matches)
-            ..where((m) =>
-                m.tournamentId.equals(tournamentId) &
-                m.round.equals(round)))
+      await (delete(matches)..where(
+            (m) => m.tournamentId.equals(tournamentId) & m.round.equals(round),
+          ))
           .go();
-      await (delete(roundRests)
-            ..where((r) =>
-                r.tournamentId.equals(tournamentId) &
-                r.round.equals(round)))
+      await (delete(roundRests)..where(
+            (r) => r.tournamentId.equals(tournamentId) & r.round.equals(round),
+          ))
           .go();
     });
   }
@@ -204,8 +207,9 @@ class AppDatabase extends _$AppDatabase {
 
   /// Get resting team for round
   Future<RoundRest?> getRestForRound(String tournamentId, int round) {
-    return (select(roundRests)
-          ..where((r) => r.tournamentId.equals(tournamentId) & r.round.equals(round)))
+    return (select(roundRests)..where(
+          (r) => r.tournamentId.equals(tournamentId) & r.round.equals(round),
+        ))
         .getSingleOrNull();
   }
 
@@ -224,14 +228,15 @@ class AppDatabase extends _$AppDatabase {
 
   /// Delete round rest for a round
   Future<int> deleteRoundRest(String tournamentId, int round) {
-    return (delete(roundRests)
-          ..where((r) => r.tournamentId.equals(tournamentId) & r.round.equals(round)))
+    return (delete(roundRests)..where(
+          (r) => r.tournamentId.equals(tournamentId) & r.round.equals(round),
+        ))
         .go();
   }
 
   // ================= TOURNAMENT RESET & MANAGEMENT =================
 
-  /// Seed initial tournament, 11 default Cyrillic teams and 22 rounds schedule if empty
+  /// Seed initial tournament, 12 La Liga teams and 22 rounds schedule if empty
   Future<void> seedInitialDataIfEmpty() async {
     final tournamentId = AppConstants.defaultTournamentId;
     final now = DateTime.now();
@@ -250,15 +255,36 @@ class AppDatabase extends _$AppDatabase {
     }
 
     final existingTeams = await getAllTeams(includeArchived: true);
-    final hasLegacyTeams = existingTeams.any(
-      (t) => t.name == 'Paxtakor' || t.name == 'Bunyodkor' || t.name == 'Do‘stlik' || t.name == 'Shoxguzar',
-    );
+    const legacyTeamNames = {
+      'Шохгузар ФК',
+      'Булокбоши ФК',
+      'Фахрийлар ФК',
+      'Дустлик ФК',
+      'Курғонча ФК',
+      'Арсенал ФК',
+      'Сарбонтепа ФК',
+      'Махалла ФК',
+      'Ливерпуль ФК',
+      'Найман ФК',
+      'Кезар ФК',
+      'Paxtakor',
+      'Bunyodkor',
+      'Do‘stlik',
+      'Shoxguzar',
+    };
+    final hasLegacyTeams =
+        existingTeams.isNotEmpty &&
+        existingTeams.every((team) => legacyTeamNames.contains(team.name));
 
     if (existingTeams.isEmpty || hasLegacyTeams) {
       await transaction(() async {
         if (hasLegacyTeams) {
-          await (delete(matches)..where((m) => m.tournamentId.equals(tournamentId))).go();
-          await (delete(roundRests)..where((r) => r.tournamentId.equals(tournamentId))).go();
+          await (delete(
+            matches,
+          )..where((m) => m.tournamentId.equals(tournamentId))).go();
+          await (delete(
+            roundRests,
+          )..where((r) => r.tournamentId.equals(tournamentId))).go();
           await delete(teams).go();
         }
         for (final teamData in AppConstants.initialTeams) {
@@ -276,7 +302,9 @@ class AppDatabase extends _$AppDatabase {
       });
     }
 
-    final existingMatches = await (select(matches)..where((m) => m.tournamentId.equals(tournamentId))).get();
+    final existingMatches = await (select(
+      matches,
+    )..where((m) => m.tournamentId.equals(tournamentId))).get();
     if (existingMatches.isEmpty) {
       await _seedScheduleForTeams(tournamentId);
     }
@@ -288,15 +316,17 @@ class AppDatabase extends _$AppDatabase {
     if (activeTeams.length < 2) return;
 
     final teamEntities = activeTeams
-        .map((t) => TeamEntity(
-              id: t.id,
-              name: t.name,
-              colorValue: t.colorValue,
-              logoPath: t.logoPath,
-              isArchived: t.isArchived,
-              createdAt: t.createdAt,
-              updatedAt: t.updatedAt,
-            ))
+        .map(
+          (t) => TeamEntity(
+            id: t.id,
+            name: t.name,
+            colorValue: t.colorValue,
+            logoPath: t.logoPath,
+            isArchived: t.isArchived,
+            createdAt: t.createdAt,
+            updatedAt: t.updatedAt,
+          ),
+        )
         .toList();
 
     final now = DateTime.now();
@@ -358,9 +388,15 @@ class AppDatabase extends _$AppDatabase {
   /// Reset current tournament (clears all matches and round rests, restores active state, and regenerates default 22 rounds)
   Future<void> resetTournament(String tournamentId) async {
     await transaction(() async {
-      await (delete(matches)..where((m) => m.tournamentId.equals(tournamentId))).go();
-      await (delete(roundRests)..where((r) => r.tournamentId.equals(tournamentId))).go();
-      await (update(tournaments)..where((t) => t.id.equals(tournamentId))).write(
+      await (delete(
+        matches,
+      )..where((m) => m.tournamentId.equals(tournamentId))).go();
+      await (delete(
+        roundRests,
+      )..where((r) => r.tournamentId.equals(tournamentId))).go();
+      await (update(
+        tournaments,
+      )..where((t) => t.id.equals(tournamentId))).write(
         TournamentsCompanion(
           status: const Value('active'),
           updatedAt: Value(DateTime.now()),
@@ -372,7 +408,9 @@ class AppDatabase extends _$AppDatabase {
 
   /// Get current tournament
   Future<Tournament?> getTournament(String tournamentId) {
-    return (select(tournaments)..where((t) => t.id.equals(tournamentId))).getSingleOrNull();
+    return (select(
+      tournaments,
+    )..where((t) => t.id.equals(tournamentId))).getSingleOrNull();
   }
 
   /// Update tournament status
@@ -385,4 +423,3 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 }
-
